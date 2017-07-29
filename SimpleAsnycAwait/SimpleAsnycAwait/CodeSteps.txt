@@ -1,0 +1,60 @@
+
+
+
+
+    //Step 1: Create a long running operation
+    private static Task<string> LongRunningOperation()
+    {
+      int counter;
+
+      for (counter = 0; counter < 100; counter++)
+        {
+        Thread.Sleep(3000);
+        Console.WriteLine(counter);
+        }
+
+      return Task.FromResult("Counter = " + counter);
+    }
+
+
+    //Step 2: Create task to run long running operation and write count when completed.
+    private async Task<string> RunOperation()
+    {
+      var result = await LongRunningOperation();
+      Console.WriteLine($"Counts complete: {result}");
+      return result;
+    }
+
+
+
+    //Step 3: Start operation
+    public Task Start()
+    {
+      return Task.Run(async () => await RunOperation());
+    }
+
+
+    //Step 4: Add to Program.Main
+    //Instantiate class
+    var demo = new AsyncAwaitDemo();
+
+    //Start task
+    var counterTask = demo.Start();
+
+    //Run on  main thread infinitely
+      while (true)
+      {
+        //if the task is not complete
+        if (!counterTask.IsCompleted)
+        {
+          //Read line and do some stuff using the main thread 
+          var input = Console.ReadLine();
+          Console.WriteLine($"Read {input} on the Main Thread While Counter Task is Running...................");
+        }
+        else
+        {
+          //The task is complete so just keep on keeping on doing stuff on the main thread. 
+          Console.WriteLine($"Doing Stuff on the Main Thread...................");
+        }
+      }
+

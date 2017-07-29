@@ -5,6 +5,12 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleParallelExamples", "SimpleParallelExamples\SimpleParallelExamples.csproj", "{87734174-9211-4CB1-95AC-60E825FEA166}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{6A2D57E9-7DA7-48F1-BE76-E5331E887B45}"
+	ProjectSection(SolutionItems) = preProject
+		RunParallelThatIsFaster.txt = RunParallelThatIsFaster.txt
+		RunParallelThatIsSlower.txt = RunParallelThatIsSlower.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

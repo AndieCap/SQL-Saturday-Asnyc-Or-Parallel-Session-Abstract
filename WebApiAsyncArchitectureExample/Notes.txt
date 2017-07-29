@@ -1,0 +1,49 @@
+
+//Example 1: Web Client Resource Example ///////////////
+
+    // GET api/values
+    public async Task<string[]> Get()
+    {
+
+      var httpClient = new HttpClient();
+      var ip = await httpClient.GetStringAsync("https://api.ipify.org");
+
+      return new[] { ip, "value2" };
+    }
+
+//Example 2: Database Resource Example///////////////////
+//Step 1: Create Repository
+public static readonly string ConnectionString = @"Data Source=.\SQLSERVER2014;Initial Catalog=tempdb;Integrated Security=True";
+
+   public static SqlConnection GetOpenConnection()
+    {
+      var connection = new SqlConnection(ConnectionString);
+      connection.Open();
+      return connection;
+    }
+
+    //Add Get Method
+    public async Task<IEnumerable<string>> GetAsync(int id)
+    {
+      using (var connection = GetOpenConnection())
+      {
+        return await connection.QueryAsync<string>("select 'abc' as [Value] union all select @txt", new { txt = "def" });
+      }
+    }
+
+//Step 2: Create manager is business layer
+    //Add Get method
+    public async Task<string> Get(int id)
+    {
+      var repo = new ValuesRepository();
+      var results = await repo.GetAsync(id);
+
+      return results.First();
+    }
+
+  // Step 3: Add Get route to api controller
+      // GET api/values/5
+    public Task<string> Get(int id)
+    {
+      return new ValuesManager().Get(id);
+    }

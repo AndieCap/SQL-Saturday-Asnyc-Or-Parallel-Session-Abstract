@@ -1,0 +1,39 @@
+ var stopWatch = Stopwatch.StartNew();
+        PointF firstLocation = new PointF(10, 10);
+        PointF secondLocation = new PointF(10, 50 );
+
+        //Sync
+        foreach (string file in Directory.GetFiles(@"c:\temp\Images"))
+          {
+          Bitmap bitmap = (Bitmap) System.Drawing.Image.FromFile(file);
+          using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+            using (Font arialFont = new Font("Arial", 10))
+              {
+              graphics.DrawString("Hello", arialFont, Brushes.Blue, firstLocation);
+              graphics.DrawString("World", arialFont, Brushes.Red, secondLocation);
+              }
+            }
+          bitmap.Save(Path.GetDirectoryName(file) + "\\Foreachloop" + "\\" + Path.GetFileNameWithoutExtension(file) + Guid.NewGuid()
+                        .ToString() + ".jpg");
+          }
+        Console.WriteLine("foreach loop execution time = {0} seconds\n", stopWatch.Elapsed.TotalSeconds);
+
+         stopWatch = Stopwatch.StartNew();
+      
+      //Parallel
+        Parallel.ForEach(Directory.GetFiles(@"C:\temp\Images"), file =>
+          {
+          Bitmap bitmap = (Bitmap)Image.FromFile(file);
+          using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+            using (Font arialFont = new Font("Arial", 10))
+              {
+              graphics.DrawString("Hello", arialFont, Brushes.Blue, firstLocation);
+              graphics.DrawString("World", arialFont, Brushes.Red, secondLocation);
+              }
+            }
+          bitmap.Save(Path.GetDirectoryName(file) + "\\Parallel" + "\\" + Path.GetFileNameWithoutExtension(file) + Guid.NewGuid()
+                        .ToString() + ".jpg");
+          });
+        Console.WriteLine("Parallel.ForEach() execution time = {0} seconds", stopWatch.Elapsed.TotalSeconds);
